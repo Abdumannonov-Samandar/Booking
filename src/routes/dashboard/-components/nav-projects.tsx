@@ -6,7 +6,7 @@ import {
 	SidebarMenuButton,
 	SidebarMenuItem,
 } from '@/components/ui/sidebar'
-import { useRouter } from '@tanstack/react-router'
+import { Link, useRouter } from '@tanstack/react-router'
 import { type LucideIcon } from 'lucide-react'
 
 export function NavProjects({
@@ -36,7 +36,7 @@ export function NavProjects({
                   ${isActive && 'bg-blue-500 text-white'}`}
 								asChild
 							>
-								<a href={item.url}>
+								<Link to={item.url}>
 									<item.icon size={18} />
 									<span
 										className={`
@@ -52,7 +52,7 @@ export function NavProjects({
 									>
 										{item.name}
 									</span>
-								</a>
+								</Link>
 							</SidebarMenuButton>
 						</SidebarMenuItem>
 					)
