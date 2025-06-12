@@ -1,73 +1,27 @@
 'use client'
 
+import { Frame, Map, PieChart } from 'lucide-react'
 import * as React from 'react'
-import {
-	AudioWaveform,
-	Command,
-	Frame,
-	GalleryVerticalEnd,
-	Map,
-	PieChart,
-} from 'lucide-react'
 
-import { NavMain } from '.././-components/nav-main'
-import { NavProjects } from '.././-components/nav-projects'
-import { NavUser } from '.././-components/nav-user'
-import { TeamSwitcher } from '.././-components/team-switcher'
+import Logo from '@/components/svg/logo'
 import {
 	Sidebar,
 	SidebarContent,
 	SidebarFooter,
 	SidebarHeader,
 	SidebarRail,
+	SidebarTrigger,
 } from '@/components/ui/sidebar'
+import { NavProjects } from '.././-components/nav-projects'
+import { NavUser } from '.././-components/nav-user'
 
 // This is sample data.
 const data = {
 	user: {
-		name: 'shadcn',
-		email: 'm@example.com',
-		avatar: '/avatars/shadcn.jpg',
+		name: 'Pokémon',
+		email: 'pokemongame.com',
+		avatar: '',
 	},
-	teams: [
-		{
-			name: 'Acme Inc',
-			logo: GalleryVerticalEnd,
-			plan: 'Enterprise',
-		},
-		{
-			name: 'Acme Corp.',
-			logo: AudioWaveform,
-			plan: 'Startup',
-		},
-		{
-			name: 'Evil Corp.',
-			logo: Command,
-			plan: 'Free',
-		},
-	],
-	navMain: [
-		{
-			title: 'Playground',
-			url: '/dashboard/playground',
-			icon: Frame,
-			isActive: true,
-			items: [
-				{
-					title: 'History',
-					url: '/dashboard/playground/history',
-				},
-				{
-					title: 'Starred',
-					url: '/dashboard/playground/starred',
-				},
-				{
-					title: 'Settings',
-					url: '/dashboard/playground/settings',
-				},
-			],
-		},
-	],
 	projects: [
 		{
 			name: 'Pokemon',
@@ -75,13 +29,33 @@ const data = {
 			icon: Frame,
 		},
 		{
-			name: 'Sales & Marketing',
-			url: '#',
+			name: 'Home',
+			url: '/',
+			icon: Map,
+		},
+		{
+			name: 'Wallet',
+			url: '/wallet',
 			icon: PieChart,
 		},
 		{
-			name: 'Travel',
-			url: '#',
+			name: 'Booking',
+			url: '/booking',
+			icon: Map,
+		},
+		{
+			name: 'Business',
+			url: '/business',
+			icon: PieChart,
+		},
+		{
+			name: 'Explore',
+			url: '/explore',
+			icon: Map,
+		},
+		{
+			name: 'Support',
+			url: '/support',
 			icon: Map,
 		},
 	],
@@ -89,13 +63,18 @@ const data = {
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 	return (
-		<Sidebar collapsible='icon' {...props}>
+		<Sidebar variant='floating' collapsible='icon' {...props}>
 			<SidebarHeader>
-				<TeamSwitcher teams={data.teams} />
+				{/* <TeamSwitcher teams={data.teams} /> */}
+
+				<div className='flex items-center group-data-[collapsible=icon]:justify-center justify-between'>
+					<Logo className='group-data-[collapsible=icon]:hidden' />
+					<SidebarTrigger className='fill-transparent hover:bg-blue-500' />
+				</div>
 			</SidebarHeader>
 			<SidebarContent>
 				<NavProjects projects={data.projects} />
-				<NavMain items={data.navMain} />
+				{/* <NavMain items={data.navMain} /> */}
 			</SidebarContent>
 			<SidebarFooter>
 				<NavUser user={data.user} />
