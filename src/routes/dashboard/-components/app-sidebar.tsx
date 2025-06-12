@@ -1,6 +1,6 @@
 'use client'
 
-import { Frame, Map, PieChart } from 'lucide-react'
+import { Map, PieChart } from 'lucide-react'
 import * as React from 'react'
 
 import Logo from '@/components/svg/logo'
@@ -23,11 +23,6 @@ const data = {
 		avatar: '',
 	},
 	projects: [
-		{
-			name: 'Pokemon',
-			url: '/pokemon',
-			icon: Frame,
-		},
 		{
 			name: 'Home',
 			url: '/',
