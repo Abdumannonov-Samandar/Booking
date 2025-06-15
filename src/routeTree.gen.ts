@@ -14,7 +14,9 @@ import { createFileRoute } from '@tanstack/react-router'
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as NotFoundImport } from './routes/$not-found'
+import { Route as TaxiIndexImport } from './routes/taxi/index'
 import { Route as PokemonIndexImport } from './routes/pokemon/index'
+import { Route as HotelIndexImport } from './routes/hotel/index'
 import { Route as DashboardIndexImport } from './routes/dashboard/index'
 import { Route as DashboardPlaygroundIndexImport } from './routes/dashboard/playground/index'
 import { Route as DashboardPlaygroundHistoryImport } from './routes/dashboard/playground/history'
@@ -37,9 +39,21 @@ const IndexLazyRoute = IndexLazyImport.update({
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
 
+const TaxiIndexRoute = TaxiIndexImport.update({
+  id: '/taxi/',
+  path: '/taxi/',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const PokemonIndexRoute = PokemonIndexImport.update({
   id: '/pokemon/',
   path: '/pokemon/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const HotelIndexRoute = HotelIndexImport.update({
+  id: '/hotel/',
+  path: '/hotel/',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -88,11 +102,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardIndexImport
       parentRoute: typeof rootRoute
     }
+    '/hotel/': {
+      id: '/hotel/'
+      path: '/hotel'
+      fullPath: '/hotel'
+      preLoaderRoute: typeof HotelIndexImport
+      parentRoute: typeof rootRoute
+    }
     '/pokemon/': {
       id: '/pokemon/'
       path: '/pokemon'
       fullPath: '/pokemon'
       preLoaderRoute: typeof PokemonIndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/taxi/': {
+      id: '/taxi/'
+      path: '/taxi'
+      fullPath: '/taxi'
+      preLoaderRoute: typeof TaxiIndexImport
       parentRoute: typeof rootRoute
     }
     '/dashboard/playground/history': {
@@ -118,7 +146,9 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexLazyRoute
   '/$not-found': typeof NotFoundRoute
   '/dashboard': typeof DashboardIndexRoute
+  '/hotel': typeof HotelIndexRoute
   '/pokemon': typeof PokemonIndexRoute
+  '/taxi': typeof TaxiIndexRoute
   '/dashboard/playground/history': typeof DashboardPlaygroundHistoryRoute
   '/dashboard/playground': typeof DashboardPlaygroundIndexRoute
 }
@@ -127,7 +157,9 @@ export interface FileRoutesByTo {
   '/': typeof IndexLazyRoute
   '/$not-found': typeof NotFoundRoute
   '/dashboard': typeof DashboardIndexRoute
+  '/hotel': typeof HotelIndexRoute
   '/pokemon': typeof PokemonIndexRoute
+  '/taxi': typeof TaxiIndexRoute
   '/dashboard/playground/history': typeof DashboardPlaygroundHistoryRoute
   '/dashboard/playground': typeof DashboardPlaygroundIndexRoute
 }
@@ -137,7 +169,9 @@ export interface FileRoutesById {
   '/': typeof IndexLazyRoute
   '/$not-found': typeof NotFoundRoute
   '/dashboard/': typeof DashboardIndexRoute
+  '/hotel/': typeof HotelIndexRoute
   '/pokemon/': typeof PokemonIndexRoute
+  '/taxi/': typeof TaxiIndexRoute
   '/dashboard/playground/history': typeof DashboardPlaygroundHistoryRoute
   '/dashboard/playground/': typeof DashboardPlaygroundIndexRoute
 }
@@ -148,7 +182,9 @@ export interface FileRouteTypes {
     | '/'
     | '/$not-found'
     | '/dashboard'
+    | '/hotel'
     | '/pokemon'
+    | '/taxi'
     | '/dashboard/playground/history'
     | '/dashboard/playground'
   fileRoutesByTo: FileRoutesByTo
@@ -156,7 +192,9 @@ export interface FileRouteTypes {
     | '/'
     | '/$not-found'
     | '/dashboard'
+    | '/hotel'
     | '/pokemon'
+    | '/taxi'
     | '/dashboard/playground/history'
     | '/dashboard/playground'
   id:
@@ -164,7 +202,9 @@ export interface FileRouteTypes {
     | '/'
     | '/$not-found'
     | '/dashboard/'
+    | '/hotel/'
     | '/pokemon/'
+    | '/taxi/'
     | '/dashboard/playground/history'
     | '/dashboard/playground/'
   fileRoutesById: FileRoutesById
@@ -174,7 +214,9 @@ export interface RootRouteChildren {
   IndexLazyRoute: typeof IndexLazyRoute
   NotFoundRoute: typeof NotFoundRoute
   DashboardIndexRoute: typeof DashboardIndexRoute
+  HotelIndexRoute: typeof HotelIndexRoute
   PokemonIndexRoute: typeof PokemonIndexRoute
+  TaxiIndexRoute: typeof TaxiIndexRoute
   DashboardPlaygroundHistoryRoute: typeof DashboardPlaygroundHistoryRoute
   DashboardPlaygroundIndexRoute: typeof DashboardPlaygroundIndexRoute
 }
@@ -183,7 +225,9 @@ const rootRouteChildren: RootRouteChildren = {
   IndexLazyRoute: IndexLazyRoute,
   NotFoundRoute: NotFoundRoute,
   DashboardIndexRoute: DashboardIndexRoute,
+  HotelIndexRoute: HotelIndexRoute,
   PokemonIndexRoute: PokemonIndexRoute,
+  TaxiIndexRoute: TaxiIndexRoute,
   DashboardPlaygroundHistoryRoute: DashboardPlaygroundHistoryRoute,
   DashboardPlaygroundIndexRoute: DashboardPlaygroundIndexRoute,
 }
@@ -201,7 +245,9 @@ export const routeTree = rootRoute
         "/",
         "/$not-found",
         "/dashboard/",
+        "/hotel/",
         "/pokemon/",
+        "/taxi/",
         "/dashboard/playground/history",
         "/dashboard/playground/"
       ]
@@ -215,8 +261,14 @@ export const routeTree = rootRoute
     "/dashboard/": {
       "filePath": "dashboard/index.tsx"
     },
+    "/hotel/": {
+      "filePath": "hotel/index.tsx"
+    },
     "/pokemon/": {
       "filePath": "pokemon/index.tsx"
+    },
+    "/taxi/": {
+      "filePath": "taxi/index.tsx"
     },
     "/dashboard/playground/history": {
       "filePath": "dashboard/playground/history.tsx"

@@ -1,89 +1,77 @@
-import {
-	Breadcrumb,
-	BreadcrumbItem,
-	BreadcrumbLink,
-	BreadcrumbList,
-	BreadcrumbPage,
-	BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb'
-import {
-	SidebarInset,
-	SidebarProvider,
-} from '@/components/ui/sidebar'
-import { Outlet, createRootRoute } from '@tanstack/react-router'
-import { TanStackRouterDevtools } from '@tanstack/router-devtools'
+import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar'
+import { Outlet, createRootRoute, useRouterState } from '@tanstack/react-router'
 import { AppSidebar } from './dashboard/-components/app-sidebar'
+import clsx from 'clsx'
+import Header from '@/components/header'
 
 export const Route = createRootRoute({
-	component: () => (
-		<>
+	component: () => {
+		// Foydalanuvchi ayni damdagi URL pathini olamiz
+		const pathname = useRouterState({
+			select: state => state.location.pathname,
+		})
+
+		// 404 sahifa tekshiruvi
+		const isNotFoundPage = useRouterState({
+			select: state =>
+				state.matches[state.matches.length - 1]?.routeId === '/$not-found',
+		})
+
+		// Asosiy (katta) background uchun yo'llar
+		const homeRoutes = ['/', '/hotel']
+
+		// Kichik (summary, results) background uchun yo'llar
+		const detailRoutes = [
+			'/results',
+			'/summary',
+			'/hotel/map-view',
+			'/hotel/results',
+			'/hotel/booking-review',
+			'/taxi',
+		]
+
+		// Qaysi turdagi background kerakligini aniqlaymiz
+		const isHomeRoute =
+			homeRoutes.includes(pathname) ||
+			homeRoutes.some(
+				route =>
+					pathname === route ||
+					(route !== '/' && pathname.startsWith(route + '/'))
+			)
+		const isDetailRoute = detailRoutes.some(route => pathname.startsWith(route))
+
+		// Background ko'rsatish kerakmi?
+		const shouldShowBackground =
+			!isNotFoundPage && (isHomeRoute || isDetailRoute)
+
+		return (
 			<SidebarProvider>
 				<AppSidebar />
-				<SidebarInset>
-					<header className='flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12'>
-						<div className='flex items-center gap-2 px-4'>
-							<Breadcrumb>
-								<BreadcrumbList>
-									<BreadcrumbItem className='hidden md:block'>
-										<BreadcrumbLink href='#'>
-											Building Your Application
-										</BreadcrumbLink>
-									</BreadcrumbItem>
-									<BreadcrumbSeparator className='hidden md:block' />
-									<BreadcrumbItem>
-										<BreadcrumbPage>Data Fetching</BreadcrumbPage>
-									</BreadcrumbItem>
-								</BreadcrumbList>
-							</Breadcrumb>
-						</div>
-					</header>
-					<div className='flex flex-1 flex-col gap-4 p-4 pt-0'>
+				<SidebarInset className='relative'>
+					<Header className={isNotFoundPage ? 'hidden' : undefined} />
+
+					{/* Background rasmi */}
+					{shouldShowBackground && (
+						<div
+							className={clsx(
+								'fixed top-0 left-0 right-0 bg-no-repeat bg-cover bg-center z-0',
+								{
+									'h-[431px] bg-[url("/big.svg")]': isHomeRoute,
+									'h-[117px] bg-[url("/bg-top.svg")]':
+										isDetailRoute && !isHomeRoute,
+								}
+							)}
+						/>
+					)}
+
+					{/* Asosiy kontent */}
+					<div
+						className='relative flex flex-1 flex-col gap-4 p-4 pt-0 z-20'
+					>
 						<Outlet />
 					</div>
-					<TanStackRouterDevtools />
 				</SidebarInset>
 			</SidebarProvider>
-
-			{/* <div className='container pt-10'>
-				<Outlet />
-			</div>
-			<TanStackRouterDevtools /> */}
-		</>
-	),
+		)
+	},
 })
-{
-	/* <NavigationMenu className='p-4 h-fit'>
-				<NavigationMenuList className='flex items-center gap-4'>
-					<NavigationMenuItem>
-						<h1 className='font-bold text-md'>
-							Tanstack Query Project Starter
-						</h1>
-					</NavigationMenuItem>
-					<NavigationMenuItem>
-						<Link
-							to='/'
-							className='[&.active]:border-b-2 [&.active]:text-red-500 pb-1 border-red-500'
-						>
-							<NavigationMenuLink>Home</NavigationMenuLink>
-						</Link>
-					</NavigationMenuItem>
-					<NavigationMenuItem>
-						<Link
-							to='/pokemon'
-							className='[&.active]:border-b-2 [&.active]:text-red-500 pb-1 border-red-500'
-							search={{ limit: 15, offset: 0 }}
-						>
-							<NavigationMenuLink>Pokemon</NavigationMenuLink>
-						</Link>
-					</NavigationMenuItem>
-					<NavigationMenuItem>
-						<Link
-							to='/dashboard'
-							className='[&.active]:border-b-2 [&.active]:text-red-500 pb-1 border-red-500'
-						>
-							<NavigationMenuLink>Dashboard</NavigationMenuLink>
-						</Link>
-					</NavigationMenuItem>
-				</NavigationMenuList>
-			</NavigationMenu> */
-}
